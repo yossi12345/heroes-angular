@@ -1,0 +1,34 @@
+<form [formGroup]="logForm" (ngSubmit)="handleSubmit()">
+    <h1>{{isSignIn?'sign in':'sign up'}}</h1>
+    <h5>{{upperError}}</h5>
+    <div>
+        <label>username:</label>
+        <div>
+            <input formControlName="username"/>
+            <div class="error-message">
+                {{getError(false)}}
+            </div>
+        </div>
+    </div>
+    <div>
+        <label>password:</label>
+        <div>
+            <input formControlName="password"/>
+            <div class="error-message">
+               {{getError(true)}}
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!isSignIn">
+        <label>repeat password:</label>
+        <div  class="input-container">
+            <input formControlName="repeatedPassword"/>
+            <div class="error-message" *ngIf="(isUserSubmited||getControl('repeatedPassword').touched)&&getControl('repeatedPassword').value!==getControl('password').value">
+                two passwords must be identical
+            </div>
+        </div>
+    </div>
+    <button class="center">Submit</button>
+    <a class="center" *ngIf="isSignIn" routerLink="/sign-up">to sign up</a>
+    <a class="center" *ngIf="!isSignIn" routerLink="/sign-in">to sign in</a>
+</form>

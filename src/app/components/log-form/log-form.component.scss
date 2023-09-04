@@ -1,0 +1,35 @@
+:host{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+form{
+    border: 2px solid gray;
+    border-radius: 10px;
+    padding: 10px 50px;
+    display: flex;
+    flex-direction: column;
+    gap:25px
+}
+.center{
+    align-self: center;
+}
+h1{
+    text-align: center;
+    margin: 0;
+}
+label{
+    margin-bottom: 4px;
+    display: inline-block;
+}
+h5,.error-message{
+    font-size: 12px;
+    color: red;
+}
+.error-message{
+    position: absolute;
+}
+.input-container{
+    position: relative;
+}

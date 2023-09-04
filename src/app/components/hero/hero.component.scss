@@ -1,0 +1,30 @@
+:host{
+    border: 5px ridge brown ;
+}
+img{
+    width:300px;
+    height:300px;
+}
+.details-container{
+    display: flex;
+    flex-direction: column;
+    gap:5px;
+}
+.down-part{
+    padding: 10px;
+    background-color: burlywood;
+    margin-top: -4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.name{
+    text-align: center;
+    padding: 10px 0;
+    font-weight: bold;
+    font-size: 20px;
+    background-color: burlywood;
+}
+button{
+    height: fit-content;
+}
