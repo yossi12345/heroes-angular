@@ -1,0 +1,12 @@
+<div class="modal" >
+    <button (click)="onClick()" class="close-btn">
+        <mat-icon class="x-icon">close</mat-icon>
+    </button>
+    <div>
+        The hero {{(hero|async)?.name}} is very tired now.<br/>
+        You can train it in {{allowedNextTrainingDate|async|differenceTimeFromNow}} hours
+    </div>
+    <button (click)="onClick()">OK</button>
+</div>
+
+    

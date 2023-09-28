@@ -19,7 +19,6 @@ export class AuthService {
   signIn(username:string,password:string){
     const {user,token}=signIn(username,password)
     if (token&&user){
-      console.log('weffsa')
       this.handleLogSuccessfully(user,token)
       return true
     }
@@ -41,12 +40,6 @@ export class AuthService {
     this.router.navigate(['/sign-in'],{replaceUrl:true})
   }
   isLogged(){
-    // console.log("dd",this.token)
-    // if (this.token&&getUserByToken(this.token)){
-      
-    //   return true
-    // }
-    // return false
     return (this.token&&getUserByToken(this.token))?true:false
   }
   private handleLogSuccessfully(user:User,token:string){

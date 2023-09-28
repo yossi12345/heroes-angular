@@ -1,7 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {FormBuilder,FormControl,FormGroup, Validators } from '@angular/forms';
-import { User } from 'src/app/database';
-import { IUser } from 'src/app/models/user';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({

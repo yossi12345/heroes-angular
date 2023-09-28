@@ -1,6 +1,23 @@
+@import "~font-awesome/css/font-awesome.css";
 *{
     box-sizing: border-box;
 }
 body{
     margin: 0;
 }
+.heroes-container{
+    display: flex;
+    gap:50px;
+    height: calc(100vh - 100px);
+    overflow: auto;
+    padding: 40px 0;
+    width: 100vw;
+    align-items: center;
+    flex-direction: column;
+    @media (min-width:1070px) {
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

@@ -1,1 +1,9 @@
-<p>user-heroes-page works!</p>
+<app-hero-tired-modal *ngIf="isModalClose"/>
+<app-header [isUserPage]="true"/>
+<div class="heroes-container" *ngIf="heroes.length>0">
+    <app-hero *ngFor="let hero of heroes" [hero]="hero" [isUserPage]="true" (afterUnownHero)="afterUnownHero()"/>
+</div>
+<div *ngIf="heroes.length===0" class="no-heroes">
+    you don't have any heroes 
+</div>
+<app-display-pages [currentPage]="page" [amountOfHeroes]="amountOfHeroes" [isUserPage]="true"/>

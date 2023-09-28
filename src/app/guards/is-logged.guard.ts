@@ -4,11 +4,9 @@ import { AuthService } from '../services/auth.service';
 
 export const isLoggedGuard: CanActivateFn = (route, state) => {
   const authService:AuthService=inject(AuthService)
-
-  if (authService.isLogged()){
-  
+  console.log("FF")
+  if (authService.isLogged())
     return true
-  }
   const router=inject(Router)
   return router.createUrlTree(['sign-in'])
 }

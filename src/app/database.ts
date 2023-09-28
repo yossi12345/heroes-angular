@@ -1,16 +1,18 @@
 import { Observable, of } from "rxjs"
-
+const heroRestTimeInMiliseconds=86400000
 const heroes:Hero[]=[]
 const users:User[]=[]
-export function getAllHeroes(amount:number,page:number=1):Observable<{heroes:Hero[],status:number}>{
-    if (!(amount>=1&&page>=1))
+export function getAllHeroes(page:number=1):Observable<{heroes:Hero[],status:number,amount:number}>{
+    if (page<1)
         throw new Error('amount or page cant be negative')
     const result:Hero[]=[]
-    for(let i=(page-1)*amount;i<heroes.length&&i<(page*amount);i++)
+    for(let i=(page-1)*3;i<heroes.length&&i<(page*3);i++)
         result.push(heroes[i])
     return of({
         heroes:result,
+        amount:heroes.length,
         status:200
+
     })
 }
 export function signIn(username:string,password:string){
@@ -39,24 +41,18 @@ function getUserByUsername(username:string){
 export function getUserByToken(token:string){
     return getUserByUsername(token)
 }
-// function generateUUID(){
-//     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, character=> {
-//       const randomNumFrom0To15 = Math.floor(Math.random() * 16)
-//       const randomHexDigit = character === 'x' ? randomNumFrom0To15 : (randomNumFrom0To15 & 0x3 | 0x8)
-//       return randomHexDigit.toString(16)
-//     })
-// } 
-export function getUserHeroes(token:string,page:number):Observable<{heroes:Hero[],status:200}|{message:string,status:404}>{
+export function getUserHeroes(token:string,page:number):Observable<{heroes:Hero[],status:200,amount:number}|{message:string,status:404}>{
     if (!(page>=1))
         throw new Error('page cant be negative')
     const user:User|null=getUserByToken(token)
     if (user){
         const result:Hero[]=[]
-        for(let i=(page-1)*3;i<user.heroes.length&&i<(page*3-1);i++)
+        for(let i=(page-1)*3;i<user.heroes.length&&i<(page*3);i++)
             result.push(user.heroes[i])
         return of({
             heroes:result,
-            status:200
+            status:200,
+            amount:user.heroes.length
         })
     }
     return of({
@@ -93,7 +89,7 @@ export class Hero{
         this.owner=null
         heroes.push(this)
     }
-    train(token:string){
+    train(token:string):{message:string,status:404}|{message:string,allowedNextTrainDate:Date,status:400|200}{
         const user=getUserByToken(token)
         if (!user||!user.heroes.includes(this)){
             return {
@@ -114,7 +110,7 @@ export class Hero{
         this.lastTrainingDate=now
         this.amountOfTrainingsToday=this.amountOfTrainingsToday<5?(this.amountOfTrainingsToday+1):1
         return {
-            message:'trained succefully',
+            message:'trained successfully',
             allowedNextTrainDate,
             status:200,
         }
@@ -123,11 +119,10 @@ export class Hero{
         const now=new Date()
         if (this.amountOfTrainingsToday<5)
             return now
-        const milisecondsInDay=1000*10*6*60*24
-        if ((now.getTime()-this.lastTrainingDate.getTime())>=milisecondsInDay)
+        if ((now.getTime()-this.lastTrainingDate.getTime())>=heroRestTimeInMiliseconds)
             return now
-        const allowedNextTrainingDate={...this.lastTrainingDate}
-        allowedNextTrainingDate.setTime(this.lastTrainingDate.getTime()+milisecondsInDay)
+        const allowedNextTrainingDate=new Date(this.lastTrainingDate)
+        allowedNextTrainingDate.setTime(this.lastTrainingDate.getTime()+heroRestTimeInMiliseconds)
         return allowedNextTrainingDate
     }
 }
@@ -195,6 +190,21 @@ new Hero('tempest hero','assets/images/tempest-hero.jpg')
 new Hero('winged god dragon of ra','assets/images/winged-god-dragon-of-ra.jpg')
 const now=new Date().getTime()
 for (let i=0;i<heroes.length;i++){
-    if (now-heroes[i].lastTrainingDate.getTime()>=86400000)
+    if (now-heroes[i].lastTrainingDate.getTime()>=heroRestTimeInMiliseconds)
         heroes[i].amountOfTrainingsToday=0
 }
+
+
+
+
+
+
+
+
+// function generateUUID(){
+//     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, character=> {
+//       const randomNumFrom0To15 = Math.floor(Math.random() * 16)
+//       const randomHexDigit = character === 'x' ? randomNumFrom0To15 : (randomNumFrom0To15 & 0x3 | 0x8)
+//       return randomHexDigit.toString(16)
+//     })
+// } 

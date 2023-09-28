@@ -1,14 +1,5 @@
+<app-header [isUserPage]="false" />
 <div class="heroes-container">
     <app-hero *ngFor="let hero of heroes" [hero]="hero" [isUserPage]="false"/>
 </div>
-<div class="pages">
-    <a>
-
-    </a>
-    <span>
-        {{page}}
-    </span>
-    <a [routerLink]="'/heroes/'+(page+1)">
-        next
-    </a>
-</div>
+<app-display-pages [currentPage]="page" [amountOfHeroes]="amountOfHeroes" [isUserPage]="false"/>

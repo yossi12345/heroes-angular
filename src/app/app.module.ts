@@ -10,7 +10,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { UserHeroesPageComponent } from './components/pages/user-heroes-page/user-heroes-page.component';
 import { AllHeroesPageComponent } from './components/pages/all-heroes-page/all-heroes-page.component';
 import { HeroComponent } from './components/hero/hero.component';
-
+import { DisplayPagesComponent } from './components/display-pages/display-pages.component';
+import { HeaderComponent } from './components/header/header.component';
+import { HeroTiredModalComponent } from './components/hero-tired-modal/hero-tired-modal.component';
+import { DifferenceTimeFromNowPipe } from './pipes/difference-time-from-now.pipe';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatIconModule} from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DialogComponent } from './components/dialog/dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,14 +27,29 @@ import { HeroComponent } from './components/hero/hero.component';
     LogFormComponent,
     UserHeroesPageComponent,
     AllHeroesPageComponent,
-    HeroComponent
+    HeroComponent,
+    DisplayPagesComponent,
+    HeaderComponent,
+    HeroTiredModalComponent,
+    DifferenceTimeFromNowPipe,
+    DialogComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FontAwesomeModule,
+    BrowserAnimationsModule,
+    MatIconModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+// לעשות רספונסיבי=להקטין הקלף 
+// לעשות דיאלוג גנרי שמקבל מחרוזת להצגה וזהו 
+// להוציא מהסרוויס של הגיבורים דברים שקשורים למודל 
+// להוסיף עמוד של גיבור בודד
+// בסרוויס של הגיבורים לטעון את כל הגיבורים בפעם הראשונה בלבד ואותו דבר גיבורים של היוזר
+// גם לעדכן את השעה שבה הגיבור יכול להתאמן

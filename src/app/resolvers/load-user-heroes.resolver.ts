@@ -4,7 +4,7 @@ import { map, of } from 'rxjs';
 import { HeroesService } from '../services/heroes.service';
 import { Hero } from '../database';
 
-export const loadUserHeroesResolver: ResolveFn<Hero[]|null> = (route, state) => {
+export const loadUserHeroesResolver: ResolveFn<{heroes:Hero[],amount:number}|null> = (route, state) => {
   const page=route.params['page']*1
   const router=inject(Router)
   if (!(page>=1)){
@@ -13,9 +13,9 @@ export const loadUserHeroesResolver: ResolveFn<Hero[]|null> = (route, state) => 
   }
 
   const heroesService=inject(HeroesService)  
-  return heroesService.getUserHeroes(page).pipe(map((heroes)=> {
-    if (heroes) 
-      return heroes
+  return heroesService.getUserHeroes(page).pipe(map((heroesAndAmount)=> {
+    if (heroesAndAmount) 
+      return {heroes:heroesAndAmount.heroes,amount:heroesAndAmount.amount,page}
     alert('you sign out somehow you need to sign in again')
     router.navigate(['sign-in'])
     return null
