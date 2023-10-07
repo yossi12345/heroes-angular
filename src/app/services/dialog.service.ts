@@ -7,7 +7,8 @@ import { DialogComponent } from '../components/dialog/dialog.component';
 })
 export class DialogService {
   constructor(private dialog:MatDialog) { }
-  openDialog(dialogContent:string){
-    const dialogRef=this.dialog.open(DialogComponent,{data:dialogContent})
+  openDialog(dialogContent:string|string[]){
+    const data=(typeof dialogContent==="string") ? [dialogContent] : dialogContent
+    this.dialog.open(DialogComponent,{data})
   }
 }

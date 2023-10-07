@@ -1,4 +1,5 @@
 import { Observable, of } from "rxjs"
+const genericHeroDescription="dragons of lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem" 
 const heroRestTimeInMiliseconds=86400000
 const heroes:Hero[]=[]
 const users:User[]=[]
@@ -13,6 +14,19 @@ export function getAllHeroes(page:number=1):Observable<{heroes:Hero[],status:num
         amount:heroes.length,
         status:200
 
+    })
+}
+export function getSpecificHero(heroName:string):Observable<{message:string,status:404}|{hero:Hero,status:200}>{
+    const hero=heroes.find((hero)=>(hero.name===heroName))
+    if (hero) {
+        return of({
+            hero,
+            status:200
+        })
+    }
+    return of({
+        status:404,
+        message:'hero not found'
     })
 }
 export function signIn(username:string,password:string){
@@ -41,18 +55,12 @@ function getUserByUsername(username:string){
 export function getUserByToken(token:string){
     return getUserByUsername(token)
 }
-export function getUserHeroes(token:string,page:number):Observable<{heroes:Hero[],status:200,amount:number}|{message:string,status:404}>{
-    if (!(page>=1))
-        throw new Error('page cant be negative')
+export function getUserHeroes(token:string):Observable<{heroes:Hero[],status:200}|{message:string,status:404}>{
     const user:User|null=getUserByToken(token)
     if (user){
-        const result:Hero[]=[]
-        for(let i=(page-1)*3;i<user.heroes.length&&i<(page*3);i++)
-            result.push(user.heroes[i])
         return of({
-            heroes:result,
+            heroes:[...user.heroes],
             status:200,
-            amount:user.heroes.length
         })
     }
     return of({
@@ -68,7 +76,7 @@ export class User{
         this.username=username
         this.password=password
         this.heroes=[]
-        console.log(this)
+        //console.log(this)
         users.push(this)
     }
    
@@ -80,13 +88,15 @@ export class Hero{
     name: string
     lastTrainingDate:Date
     owner:User|null
-    constructor(name:string,imagePath:string){
+    description:string
+    constructor(name:string,imagePath:string,description:string){
         this.imagePath=imagePath
         this.name=name
         this.amountOfTrainingsToday=0
         this.level=0
         this.lastTrainingDate=new Date()
         this.owner=null
+        this.description=description
         heroes.push(this)
     }
     train(token:string):{message:string,status:404}|{message:string,allowedNextTrainDate:Date,status:400|200}{
@@ -117,53 +127,48 @@ export class Hero{
     }
     getAllowedNextTrainingDate():Date{
         const now=new Date()
-        if (this.amountOfTrainingsToday<5)
+        const lastTrainingDateTime=this.lastTrainingDate.getTime()
+        if (this.amountOfTrainingsToday<5||(now.getTime()-lastTrainingDateTime)>=heroRestTimeInMiliseconds)
             return now
-        if ((now.getTime()-this.lastTrainingDate.getTime())>=heroRestTimeInMiliseconds)
-            return now
-        const allowedNextTrainingDate=new Date(this.lastTrainingDate)
-        allowedNextTrainingDate.setTime(this.lastTrainingDate.getTime()+heroRestTimeInMiliseconds)
-        return allowedNextTrainingDate
+        return new Date(lastTrainingDateTime+heroRestTimeInMiliseconds)
     }
 }
 export function giveHero(hero:Hero,token:string){
     const user=getUserByToken(token)
-    console.log("lll",user)
     if (!user||hero.owner){
-        return {
+        return of({
             message:"the user already has this hero",
             status:400
-        }
+        })
     }
     user.heroes.push(hero)
     hero.owner=user
-    console.log("lll")
-    return {
+    return of({
         message:"the hero was given to the user successfully",
         status:200
-    }
+    })
 }
 export function removeHero(hero:Hero,token:string){
     const user=getUserByToken(token)
     if (!user){
-        return {
+        return of({
             message:'the user isnt found',
             status:404
-        }
+        })
     }
     const heroIndex=user.heroes.indexOf(hero)
     if (heroIndex===-1){
-        return {
+        return of({
             message:"the user doesn't have this hero",
             status:404
-        }
+        })
     }
     user.heroes.splice(heroIndex,1)
     hero.owner=null
-    return {
+    return of({
         message:"the hero was taken from the user successfully",
         status:200
-    }
+    })
 }
 new User('yossi1','yugiohgx')
 new User('yossi2','yugiohgx')
@@ -176,18 +181,18 @@ new User('dimitri4','postgress')
 new User('amit','ClashRoyale')
 new User('raz','Physics') 
 new User('mor meir','12345678') 
-new Hero('empowering dragon','assets/images/empowering-dragon.jpg')
-new Hero('black rose dragon','assets/images/black-rose-dragon.jpg')
-new Hero('blue eyes white dragon','assets/images/blue-eyes-white-dragon.jpg')
-new Hero('cyber dragon','assets/images/cyber-dragon.jpg')
-new Hero('hundred dragon','assets/images/hundred-dragon.jpg')
-new Hero('obelisk the tormentor','assets/images/obelisk-the-tormentor.jpg')
-new Hero('rainbow dragon','assets/images/rainbow-dragon.jpg')
-new Hero('red eyes black dragon','assets/images/red-eyes-black-dragon.jpg')
-new Hero('slifer the sky dragon','assets/images/slifer-the-sky-dragon.jpg')
-new Hero('stardust dragon','assets/images/stardust-dragon.jpg')
-new Hero('tempest hero','assets/images/tempest-hero.jpg')
-new Hero('winged god dragon of ra','assets/images/winged-god-dragon-of-ra.jpg')
+new Hero('empowering dragon','assets/images/empowering-dragon.jpg',genericHeroDescription)
+new Hero('black rose dragon','assets/images/black-rose-dragon.jpg',genericHeroDescription)
+new Hero('blue eyes white dragon','assets/images/blue-eyes-white-dragon.jpg',genericHeroDescription)
+new Hero('cyber dragon','assets/images/cyber-dragon.jpg',genericHeroDescription)
+new Hero('hundred dragon','assets/images/hundred-dragon.jpg',genericHeroDescription)
+new Hero('obelisk the tormentor','assets/images/obelisk-the-tormentor.jpg',genericHeroDescription)
+new Hero('rainbow dragon','assets/images/rainbow-dragon.jpg',genericHeroDescription)
+new Hero('red eyes black dragon','assets/images/red-eyes-black-dragon.jpg',genericHeroDescription)
+new Hero('slifer the sky dragon','assets/images/slifer-the-sky-dragon.jpg',genericHeroDescription)
+new Hero('stardust dragon','assets/images/stardust-dragon.jpg',genericHeroDescription)
+new Hero('tempest hero','assets/images/tempest-hero.jpg',genericHeroDescription)
+new Hero('winged god dragon of ra','assets/images/winged-god-dragon-of-ra.jpg',genericHeroDescription)
 const now=new Date().getTime()
 for (let i=0;i<heroes.length;i++){
     if (now-heroes[i].lastTrainingDate.getTime()>=heroRestTimeInMiliseconds)

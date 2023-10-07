@@ -12,13 +12,14 @@ import { AllHeroesPageComponent } from './components/pages/all-heroes-page/all-h
 import { HeroComponent } from './components/hero/hero.component';
 import { DisplayPagesComponent } from './components/display-pages/display-pages.component';
 import { HeaderComponent } from './components/header/header.component';
-import { HeroTiredModalComponent } from './components/hero-tired-modal/hero-tired-modal.component';
 import { DifferenceTimeFromNowPipe } from './pipes/difference-time-from-now.pipe';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatIconModule} from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DialogComponent } from './components/dialog/dialog.component';
+import { HeroPageComponent } from './components/pages/hero-page/hero-page.component';
+import { HeroesContainerComponent } from './components/heroes-container/heroes-container.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,9 +31,11 @@ import { DialogComponent } from './components/dialog/dialog.component';
     HeroComponent,
     DisplayPagesComponent,
     HeaderComponent,
-    HeroTiredModalComponent,
+    
     DifferenceTimeFromNowPipe,
     DialogComponent,
+    HeroPageComponent,
+    HeroesContainerComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,8 +51,8 @@ import { DialogComponent } from './components/dialog/dialog.component';
 })
 export class AppModule { }
 // לעשות רספונסיבי=להקטין הקלף 
-// לעשות דיאלוג גנרי שמקבל מחרוזת להצגה וזהו 
-// להוציא מהסרוויס של הגיבורים דברים שקשורים למודל 
+//// לעשות דיאלוג גנרי שמקבל מחרוזת להצגה וזהו 
+//// להוציא מהסרוויס של הגיבורים דברים שקשורים למודל 
 // להוסיף עמוד של גיבור בודד
-// בסרוויס של הגיבורים לטעון את כל הגיבורים בפעם הראשונה בלבד ואותו דבר גיבורים של היוזר
-// גם לעדכן את השעה שבה הגיבור יכול להתאמן
+//// בסרוויס של הגיבורים לטעון את כל הגיבורים בפעם הראשונה בלבד ואותו דבר גיבורים של היוזר
+//// גם לעדכן את השעה שבה הגיבור יכול להתאמן

@@ -4,7 +4,6 @@ import { AuthService } from '../services/auth.service';
 
 export const isLoggedGuard: CanActivateFn = (route, state) => {
   const authService:AuthService=inject(AuthService)
-  console.log("FF")
   if (authService.isLogged())
     return true
   const router=inject(Router)

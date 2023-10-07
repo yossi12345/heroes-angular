@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { DialogService } from './services/dialog.service';
 
 @Component({
   selector: 'app-root',
@@ -7,8 +6,4 @@ import { DialogService } from './services/dialog.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(private dialogService:DialogService){}
-  ngOnInit(){
-    this.dialogService.openDialog("huxh")
-  }
 }

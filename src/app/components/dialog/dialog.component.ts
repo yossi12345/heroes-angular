@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject} from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -7,7 +7,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./dialog.component.scss']
 })
 export class DialogComponent {
-  constructor(@Inject(MAT_DIALOG_DATA) public data:string, public dialogRef:MatDialogRef<DialogComponent>){}
+  constructor(@Inject(MAT_DIALOG_DATA) public contentArray:string[], public dialogRef:MatDialogRef<DialogComponent>){}
   closeDialog(){
     this.dialogRef.close()
   }

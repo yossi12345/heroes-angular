@@ -1,9 +1,6 @@
-<app-hero-tired-modal *ngIf="isModalClose"/>
-<app-header [isUserPage]="true"/>
-<div class="heroes-container" *ngIf="heroes.length>0">
-    <app-hero *ngFor="let hero of heroes" [hero]="hero" [isUserPage]="true" (afterUnownHero)="afterUnownHero()"/>
-</div>
-<div *ngIf="heroes.length===0" class="no-heroes">
+<app-header [isAllHeroesPage]="false" [isUserHeroesPage]="true"/>
+<app-heroes-container [heroes]="heroesInPage" [isUserPage]="true" *ngIf="heroesInPage.length>0"/>
+<div *ngIf="allUserHeroes.length===0" class="no-heroes">
     you don't have any heroes 
 </div>
-<app-display-pages [currentPage]="page" [amountOfHeroes]="amountOfHeroes" [isUserPage]="true"/>
+<app-display-pages [currentPage]="page" [amountOfHeroes]="allUserHeroes.length" [isUserPage]="true"/>

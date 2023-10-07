@@ -27,7 +27,7 @@ export class LogFormComponent implements OnInit{
     const control=this.getControl(isPassword?'password':'username')
     if ((control.touched||this.isUserSubmited)&&control.getError('required'))
       return (isPassword?'password':'username')+' is required'
-    if (this.isSignIn||!control.touched)
+    if (!control.touched)
       return ""
     if (!isPassword&&control.getError('maxlength'))
       return "username can't be more than 10 characters"

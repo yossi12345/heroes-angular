@@ -1,6 +1,6 @@
 
-<div class="name">{{hero.name}}</div>
-<img [src]="hero.imagePath"/>
+<div class="name" (click)="navigateToHeroPage()">{{hero.name}}</div>
+<img [src]="hero.imagePath" (click)="navigateToHeroPage()"/>
 <div class="down-part">
     <div class="details-container">
         <div>level: {{hero.level |number:'1.0-2'}}</div>
@@ -10,7 +10,7 @@
     <button [disabled]="hero.owner" *ngIf="!isUserPage" (click)="ownHero()">
         get this hero
     </button>
-    <div *ngIf="isUserPage">
+    <div *ngIf="isUserPage" class="buttons-container">
         <button (click)="train()">
             train
         </button>

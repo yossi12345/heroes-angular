@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription, first } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Hero } from 'src/app/database';
 import { HeroesService } from 'src/app/services/heroes.service';
 
@@ -12,31 +12,32 @@ import { HeroesService } from 'src/app/services/heroes.service';
 export class UserHeroesPageComponent implements OnInit, OnDestroy{
   constructor(public route:ActivatedRoute,private heroesService:HeroesService,private router:Router){}
   isModalClose!:boolean
-  heroes!:Hero[]
-  amountOfHeroes!:number
+  allUserHeroes!:Hero[]
+  heroesInPage!:Hero[]
   page!:number
   subscriber!:Subscription
   ngOnInit():void{
     this.subscriber=this.route.data.subscribe((data:any)=>{
       console.log("user resolver data:",data[0])
-      this.heroes=data[0].heroes
-      this.amountOfHeroes=data[0].amount
+      this.allUserHeroes=data[0].heroes
       this.page=data[0].page
+      this.updateHeroesInPage()
+      if (this.heroesInPage.length===0&&this.page!==1)
+        this.router.navigate(['/user-heroes/1'],{replaceUrl:true})
     })
-    this.subscriber.add(this.heroesService.isModalClose.subscribe((data)=>{
-      this.isModalClose=data
+    this.subscriber.add(this.heroesService.userHeroes$.subscribe((heroes)=>{
+      if (!heroes) return 
+      this.allUserHeroes=heroes
+      this.updateHeroesInPage()
+      if (this.page>1&&this.heroesInPage.length===0)
+        this.router.navigate(['/user-heroes/'+(this.page-1)],{replaceUrl:true})
     }))
   }
-  afterUnownHero(){
-    this.heroesService.getUserHeroes(this.page).pipe(first()).subscribe((data)=>{
-      const {heroes,amount}=data as {heroes:Hero[],amount:number}
-      if (heroes.length===0&&this.page>1)
-        this.router.navigate(['/user-heroes/'+(this.page-1)],{replaceUrl:true})
-      else{
-        this.heroes=heroes
-        this.amountOfHeroes=amount
-      }
-    })
+  updateHeroesInPage(){
+    const result=[]
+    for(let i=(this.page-1)*3;i<this.allUserHeroes.length&&i<(this.page*3);i++)
+      result.push(this.allUserHeroes[i])
+    this.heroesInPage=result
   }
   ngOnDestroy(): void {
     this.subscriber.unsubscribe()
